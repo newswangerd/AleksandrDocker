@@ -1,0 +1,5 @@
+[moodle]
+master ansible_host=localhost ansible_user=localhost
+[test]
+ansible_target
+

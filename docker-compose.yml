@@ -1,0 +1,10 @@
+moodle:
+   ports:
+     - 80:80
+     - 443:443
+   environment:
+     - MOODLE_PASSWORD: password
+     - MOODLE_USERNAME: user
+     - MARIADB_USER: root
+     - MARIADB_PASSWORD: password
+     - MARIADB_HOST: mariadb
