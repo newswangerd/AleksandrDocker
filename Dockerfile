@@ -17,7 +17,7 @@ RUN  yum -y install mariadb mariadb-server MySQL-python70w mysql-server mysql-cl
 
 #GIT
      cd /tmp && \
-#    git clone -b MOODLE_34_STABLE git://git.moodle.org/moodle.git
+     cp /moodle /tmp
 
 #Moving folders
 #RUN mv /tmp/moodle/* /var/www/html && \
