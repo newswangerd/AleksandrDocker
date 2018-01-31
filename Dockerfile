@@ -22,22 +22,12 @@ RUN wget -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
     yum -y install php
 
 #Moodle
-    
-#RUN     yum -y install deltarpm && \
-#	yum -y install epel-release && \
-#	rpm --import http://rpms.famillecollet.com/RPM-GPG-KEY-remi && \
-#	rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm && \
-#	yum-config-manager --enable extras && \
-#	yum-config-manager --enable epel && \
-#	yum-config-manager --enable remi && \
-#	yum-config-manager --disable remi-php55 && \
-#	yum-config-manager --disable remi-php56 && \
-#	#yum-config-manager --disable remi-php70 && \
-#	yum-config-manager --enable remi-php71 && \
-#	rpm -ivh https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm 
 #GIT
-#COPY  /tmp /tmp/moodle
-RUN git clone -b MOODLE_33_STABLE git://git.moodle.org/moodle.git --depth=1 /var/www/moodle
+COPY  moodle/ /tmp/moodle
+# OR THIS CAN WORK TOO
+# COPY moodle/ /var/www/html
+# in case if it fails
+#RUN git clone -b MOODLE_33_STABLE git://git.moodle.org/moodle.git --depth=1 /var/www/moodle
 WORKDIR /var/www/moodle
 
 #Moving folders
