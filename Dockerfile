@@ -27,9 +27,13 @@ COPY  moodle/ /tmp/moodle
 # OR THIS CAN WORK TOO
 # COPY moodle/ /var/www/html
 # in case if it fails
-#RUN git clone -b MOODLE_33_STABLE git://git.moodle.org/moodle.git --depth=1 /var/www/moodle
+RUN git clone -b MOODLE_33_STABLE git://git.moodle.org/moodle.git --depth=1 /var/www/moodle
 WORKDIR /var/www/moodle
 
+CMD ["httpd", "-DFOREGROUND"]
+
+# TO CHECK IT OUT - > copy files to the /var/www/html
+COPY moodle /var/www/html
 #Moving folders
 #RUN mv /tmp/moodle/* /var/www/html && \
 #    chown -R www-data:www-data /var/www/html &&\
