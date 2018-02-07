@@ -4,6 +4,13 @@ FROM centos:7
 VOLUME ["/var/moodledata"]
 EXPOSE 80 443
 
+# start apache
+ADD start_apache2.sh /start_apache2.sh 
+#start mysql
+ADD start_mysqld.sh /sstart_mysqld.sh
+#sql
+ADD sql.sh /sql.sh
+
 ENV MOODLE_URL http://127.0.0.1 \
     MOODLE_PASSWORD="password" \
     MOODLE_USERNAME="user" \
@@ -35,6 +42,6 @@ CMD ["httpd", "-DFOREGROUND"]
 # TO CHECK IT OUT - > copy files to the /var/www/html
 COPY moodle /var/www/html
 #Moving folders
-#RUN mv /tmp/moodle/* /var/www/html && \
-#    chown -R www-data:www-data /var/www/html &&\
-#    chmod 777 /var/moodledata
+RUN chmod 777 /var/moodledata && \
+    chmod 777 /var/www
+#CMD ["foreground.sh"]
