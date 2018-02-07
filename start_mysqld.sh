@@ -1,0 +1,1 @@
+exec mysqld_safe
