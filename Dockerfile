@@ -7,7 +7,8 @@ EXPOSE 80 443
 # start apache
 ADD start_apache2.sh /start_apache2.sh 
 #start mysql
-ADD start_mysqld.sh /sstart_mysqld.sh
+ADD start_mysqld.sh /start_mysqld.sh
+#
 #sql
 ADD sql.sh /sql.sh
 
@@ -26,9 +27,11 @@ RUN wget -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
     wget -q https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm && \
     yum-config-manager --enable remi-php70 && \
-    yum -y install php
+    yum -y install php && \
+    yum -y install php-xml
 
 #Moodle
+COPY config.php /var/www/html
 #GIT
 COPY  moodle/ /tmp/moodle
 # OR THIS CAN WORK TOO
