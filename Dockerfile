@@ -31,7 +31,7 @@ RUN wget -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
     yum -y install php-xml
 
 #Moodle
-COPY config.php /var/www/html
+#COPY config.php /var/www/html
 #GIT
 COPY  moodle/ /tmp/moodle
 # OR THIS CAN WORK TOO
