@@ -1,10 +1,26 @@
-moodle:
-   ports:
-     - 80:80
-     - 443:443
-   environment:
-     - MOODLE_PASSWORD: password
-     - MOODLE_USERNAME: user
-     - MARIADB_USER: root
-     - MARIADB_PASSWORD: password
-     - MARIADB_HOST: mariadb
+version: "2.0"
+services:
+ moodle:
+    build: .
+    ports:
+      - "8080:80"
+      - "443:443"
+    links: 
+      - db
+    environment:
+      - "MOODLE_PASSWORD=password"
+      - "MOODLE_USERNAME=user"
+      - "DB_ENV_MYSQL_USER=root"
+      - "DB_ENV_MYSQL_PASSWORD=password"
+      - "DB_ENV_MYSQL_DATABASE=mariadb"
+ db:
+     image: mysql:latest
+     restart: always
+     environment:
+       - "MYSQL_DATABASE=mariadb"
+       - "MYSQL_ROOT_PASSWORD=password"
+       - "MYSQL_USER=moodle"
+       - "MYSQL_PASSWORD=password"
+     ports:
+       - "8080:80"
+
