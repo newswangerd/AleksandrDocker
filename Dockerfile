@@ -5,12 +5,12 @@ VOLUME ["/var/moodledata"]
 EXPOSE 80 443
 
 # start apache
-ADD start_apache2.sh /start_apache2.sh 
+#ADD start_apache2.sh /start_apache2.sh 
 #start mysql
-ADD start_mysqld.sh /start_mysqld.sh
+#ADD start_mysqld.sh /start_mysqld.sh
 #
 #sql
-ADD sql.sh /sql.sh
+#ADD sql.sh /sql.sh
 
 ENV MOODLE_URL http://127.0.0.1 \
     MOODLE_PASSWORD="password" \
@@ -20,7 +20,7 @@ ENV MOODLE_URL http://127.0.0.1 \
     MARIADB_HOST="mariadb"
 
 # Basic requirments 
-RUN  yum -y install mariadb mariadb-server MySQL-python70w git curl unzip wget
+RUN  yum -y install  git curl unzip wget php-mysqli
 
 #Attempt the impossible - download php7
 RUN wget -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
