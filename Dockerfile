@@ -40,11 +40,17 @@ COPY  moodle/ /tmp/moodle
 RUN git clone -b MOODLE_33_STABLE git://git.moodle.org/moodle.git --depth=1 /var/www/moodle
 WORKDIR /var/www/moodle
 
-CMD ["httpd", "-DFOREGROUND"]
+#CMD ["httpd", "-DFOREGROUND"]
 
 # TO CHECK IT OUT - > copy files to the /var/www/html
 COPY moodle /var/www/html
 #Moving folders
 RUN chmod 777 /var/moodledata && \
     chmod 777 /var/www
-#CMD ["foreground.sh"]
+##CMD ["foreground.sh"]
+RUN chmod -R 755 /var/lib/
+
+CMD ["httpd", "-DFOREGROUND"]
+
+ADD stuff.sh /stuff.sh
+
