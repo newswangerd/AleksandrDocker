@@ -21,4 +21,4 @@ services:
        - "MYSQL_ROOT_PASSWORD=password"
        - "MYSQL_USER=moodle"
        - "MYSQL_PASSWORD=password"
-   
+ 
