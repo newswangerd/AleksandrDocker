@@ -29,7 +29,7 @@ RUN wget -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
     yum-config-manager --enable remi-php70 && \
     yum -y install php && \
     yum -y install php-xml
-
+RUN yum -y install initscripts
 #Moodle
 #COPY config.php /var/www/html
 #GIT
@@ -52,5 +52,5 @@ RUN chmod -R 755 /var/lib/
 
 CMD ["httpd", "-DFOREGROUND"]
 
-ADD stuff.sh /stuff.sh
+#ADD stuff.sh /stuff.sh
 
