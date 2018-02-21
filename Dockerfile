@@ -9,7 +9,7 @@ ENV MOODLE_VERSION=32 \
     MOODLE_DESTINATION=/var/www/html
 
 # Basic requirments 
-
+# Do Postgresql
 RUN apt-get update \
     && apt-get install -y libpng12-dev libjpeg-dev libpq-dev \
                           graphviz aspell libpspell-dev git-core \
@@ -37,11 +37,10 @@ RUN mkdir -p /moodle/data && \
     chmod 2775 /moodle && \
     ln -sf /moodle/conf/config.php ${MOODLE_DESTINATION}/config.php
 
+#RUN chown -R 777 /var/moodledata && \
+RUN    chmod 777 /var/www 
+   # chmod -R 755 /var/lib
 # Enable mod_rewrite
 RUN a2enmod rewrite
-
-
-
-
 #CMD ["httpd", "-DFOREGROUND"]
 
