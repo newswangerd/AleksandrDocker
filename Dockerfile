@@ -1,56 +1,47 @@
-#specify the version of centos
-FROM centos:7
 
-VOLUME ["/var/moodledata"]
-EXPOSE 80 443
+FROM php:7.0-apache
 
-# start apache
-#ADD start_apache2.sh /start_apache2.sh 
-#start mysql
-#ADD start_mysqld.sh /start_mysqld.sh
-#
-#sql
-#ADD sql.sh /sql.sh
+#VOLUME ["/var/moodledata"]
+#EXPOSE 80 443
 
-ENV MOODLE_URL http://127.0.0.1 \
-    MOODLE_PASSWORD="password" \
-    MOODLE_USERNAME="user" \
-    MARIADB_USER="root" \
-    MARIADB_PASSWORD="password" \
-    MARIADB_HOST="mariadb"
+ENV MOODLE_VERSION=32 \
+    MOODLE_GITHUB=git://git.moodle.org/moodle.git \
+    MOODLE_DESTINATION=/var/www/html
 
 # Basic requirments 
-RUN  yum -y install  git curl unzip wget php-mysqli
+
+RUN apt-get update \
+    && apt-get install -y libpng12-dev libjpeg-dev libpq-dev \
+                          graphviz aspell libpspell-dev git-core \
+    && apt-get install -y libicu-dev libxml2-dev libcurl4-openssl-dev \
+                          libldap2-dev \
+    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu \
+    && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
+    && docker-php-ext-install intl pdo xmlrpc curl pspell ldap zip pgsql gd opcache soap \
+    && docker-php-ext-enable opcache \
+    && apt-get clean && rm -rf /var/lib/apt/lists* /tmp/* /var/tmp/*
 
 #Attempt the impossible - download php7
-RUN wget -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
-    wget -q https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-    rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm && \
-    yum-config-manager --enable remi-php70 && \
-    yum -y install php && \
-    yum -y install php-xml
-RUN yum -y install initscripts
-#Moodle
-#COPY config.php /var/www/html
-#GIT
-COPY  moodle/ /tmp/moodle
-# OR THIS CAN WORK TOO
-# COPY moodle/ /var/www/html
-# in case if it fails
-RUN git clone -b MOODLE_33_STABLE git://git.moodle.org/moodle.git --depth=1 /var/www/moodle
-WORKDIR /var/www/moodle
+#RUN wget -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
+#    wget -q https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
+#    rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm && \
+#    yum-config-manager --enable remi-php70 && \
+#    yum -y install php && \
+#    yum -y install php-xml
+#RUN apt-get -y install initscripts
+
+RUN git clone -b MOODLE_${MOODLE_VERSION}_STABLE --depth 1 ${MOODLE_GITHUB} ${MOODLE_DESTINATION}
+
+RUN mkdir -p /moodle/data && \
+    chown -R www-data:www-data /moodle && \
+    chmod 2775 /moodle && \
+    ln -sf /moodle/conf/config.php ${MOODLE_DESTINATION}/config.php
+
+# Enable mod_rewrite
+RUN a2enmod rewrite
+
+
+
 
 #CMD ["httpd", "-DFOREGROUND"]
-
-# TO CHECK IT OUT - > copy files to the /var/www/html
-COPY moodle /var/www/html
-#Moving folders
-RUN chmod 777 /var/moodledata && \
-    chmod 777 /var/www
-##CMD ["foreground.sh"]
-RUN chmod -R 755 /var/lib/
-
-CMD ["httpd", "-DFOREGROUND"]
-
-#ADD stuff.sh /stuff.sh
 
