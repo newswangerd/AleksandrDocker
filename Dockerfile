@@ -1,12 +1,8 @@
 FROM php:7.0-apache
 
-ENV MOODLE_URL http://127.0.0.1 \
-    MOODLE_PASSWORD="password" \
-    MOODLE_USERNAME="user" \
-    MARIADB_USER="root" \
-    MARIADB_PASSWORD="password" \
-    MARIADB_HOST="mariadb"
-
+ENV MOODLE_VERSION=32 \
+    MOODLE_GITHUB=git://git.moodle.org/moodle.git \
+    MOODLE_DESTINATION=/var/www/html
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -34,13 +30,13 @@ RUN docker-php-ext-install mcrypt mbstring tokenizer mysqli
 #    && apt-get clean && rm -rf /var/lib/apt/lists* /tmp/* /var/tmp/*
 
 #Attempt the impossible - download php7
-RUN wget -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
-    wget -q https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-    rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm && \
-    yum-config-manager --enable remi-php70 && \
-    yum -y install php && \
-    yum -y install php-xml
-RUN apt-get -y install initscripts
+#RUN wget -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
+#    wget -q https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
+#    rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm && \
+#    yum-config-manager --enable remi-php70 && \
+#    yum -y install php && \
+#    yum -y install php-xml
+#RUN apt-get -y install initscripts
 
 RUN git clone -b MOODLE_${MOODLE_VERSION}_STABLE --depth 1 ${MOODLE_GITHUB} ${MOODLE_DESTINATION}
 
